@@ -15,7 +15,7 @@ const Login = () => {
       return;
     }
 
-    router.push("Admin/Home");
+    router.push("Employee/Home");
   };
 
   return (
