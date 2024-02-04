@@ -42,14 +42,7 @@ const AdminLayout = ({
               Announcement Management
             </Link>
           </li>
-          <li>
-            <Link
-              href="ProjectManagement"
-              className="text-white hover:text-gray-300"
-            >
-              Project Management
-            </Link>
-          </li>
+         
         </ul>
       </nav>
       <div className="flex-grow p-4">{children}</div>
