@@ -1,104 +1,236 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([
-    { id: 1, name: 'John Doe', email: 'john@example.com' },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
+    {
+      first_name: "Saman",
+      last_name: "Perera",
+      email: "john.doe@example.com",
+      address: "123 Main St, City",
+      mobile: "123-456-7890",
+      username: "johndoe",
+      role: "User",
+    },
+    {
+      first_name: "Kamal",
+      last_name: "Silva",
+      email: "john.doe@example.com",
+      address: "123 Main St, City",
+      mobile: "123-456-7890",
+      username: "johndoe",
+      role: "User",
+    },
+    {
+      first_name: "Arun",
+      last_name: "Fernando",
+      email: "john.doe@example.com",
+      address: "123 Main St, City",
+      mobile: "123-456-7890",
+      username: "johndoe",
+      role: "User",
+    },
+    {
+      first_name: "John",
+      last_name: "Doe",
+      email: "john.doe@example.com",
+      address: "123 Main St, City",
+      mobile: "123-456-7890",
+      username: "johndoe",
+      role: "User",
+    },
   ]);
 
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [newUser, setNewUser] = useState({ name: '', email: '' });
+  const [selectedUserRow, setSelectedUserRow] = useState("");
+  const [newUser, setNewUser] = useState({ name: "", email: "" });
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleCreateUser = () => {
     setUsers([...users, { id: users.length + 1, ...newUser }]);
-    setNewUser({ name: '', email: '' });
+    setNewUser({ name: "", email: "" });
   };
 
-  const handleReadUser = (userId: number) => {
-    // Implement logic for reading a specific user by its identifier
-    const user = users.find((user) => user.id === userId);
-    setSelectedUser(user);
-  };
+  // const handleReadUser = (userId: number) => {
+  //   // Implement logic for reading a specific user by its identifier
+  //   const user = users.find((user) => user.id === userId);
+  //   setSelectedUser(user);
+  // };
 
   const handleUpdateUser = () => {
-    // Implement logic for updating a user
-    // Validate input, update user details, show success message, etc.
-    // For simplicity, just update the selected user with the new details
-    setUsers(users.map((user) => (user.id === selectedUser.id ? { ...user, ...selectedUser } : user)));
+    setUsers(
+      users.map((user) =>
+        user.id === selectedUser.id ? { ...user, ...selectedUser } : user
+      )
+    );
     setSelectedUser(null);
   };
 
-  const handleDeleteUser = () => {
-    // Implement logic for deleting a user
-    // Confirm deletion, remove user from the list, show success message, etc.
-    // For simplicity, just remove the selected user from the list
-    setUsers(users.filter((user) => user.id !== selectedUser.id));
-    setSelectedUser(null);
+  // const handleDeleteUser = () => {
+  //   // Implement logic for deleting a user
+  //   // Confirm deletion, remove user from the list, show success message, etc.
+  //   // For simplicity, just remove the selected user from the list
+  //   setUsers(users.filter((user) => user.id !== selectedUser.id));
+  //   setSelectedUser(null);
+  // };
+
+  const handleSelectUser = (index) => {
+    setSelectedUserRow(index);
+    setFirstName(users[index].first_name);
+    setLastName(users[index].last_name);
+    setEmail(users[index].email);
+    setAddress(users[index].address);
+    setMobile(users[index].mobile);
+    setUsername(users[index].username);
   };
 
   return (
-    <div className="container mx-auto my-8 p-8 bg-white rounded-lg shadow-md">
+    <div className="container  bg-white ">
       <h1 className="text-2xl font-bold mb-4">User Management</h1>
 
-      {/* Create User */}
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold mb-2">Create User</h2>
+      {/* search user start*/}
+      <div className="">
+        <h2 className="text-lg font-semibold mb-2">Search users</h2>
         <div className="flex space-x-4">
           <input
             type="text"
-            placeholder="Name"
-            value={newUser.name}
-            onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-            className="p-2 border rounded-md w-1/2"
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            value={newUser.email}
-            onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-            className="p-2 border rounded-md w-1/2"
-          />
-          <button
-            type="button"
-            onClick={handleCreateUser}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md"
-          >
-            Create
-          </button>
-        </div>
-      </div>
-
-      {/* Read User */}
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold mb-2">Read User</h2>
-        <div className="flex space-x-4">
-          <input
-            type="number"
             placeholder="User ID"
             onChange={(e) => setSelectedUser(null)} // Clear selected user when searching
             className="p-2 border rounded-md"
           />
           <button
             type="button"
-            onClick={() => handleReadUser(Number(selectedUser))}
+            onClick={() => handleReadUser(Number(selectedUserRow))}
             className="bg-blue-500 text-white px-4 py-2 rounded-md"
           >
             Search
           </button>
         </div>
-        {selectedUser && (
+        {/* {selectedUser && (
           <div className="mt-4">
             <h3 className="text-lg font-semibold mb-2">User Details</h3>
             <p>ID: {selectedUser.id}</p>
             <p>Name: {selectedUser.name}</p>
             <p>Email: {selectedUser.email}</p>
           </div>
-        )}
+        )} */}
+      </div>
+      {/* search user end*/}
+
+      {/* User details table start */}
+      <div className="container mx-auto overflow-y-auto">
+        <table className="min-w-full bg-white border border-gray-300">
+          <thead>
+            <tr>
+              <th className="py-2 px-4 border-b">First Name</th>
+              <th className="py-2 px-4 border-b">Last Name</th>
+              <th className="py-2 px-4 border-b">Email</th>
+              <th className="py-2 px-4 border-b">Address</th>
+              <th className="py-2 px-4 border-b">Mobile</th>
+              <th className="py-2 px-4 border-b">Username</th>
+              <th className="py-2 px-4 border-b">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user, index) => (
+              <tr
+                key={index}
+                onClick={() => handleSelectUser(index)}
+                className="cursor-pointer"
+              >
+                <td className="py-2 px-4 border-b">
+                  {users[index].first_name}
+                </td>
+                <td className="py-2 px-4 border-b">{users[index].last_name}</td>
+                <td className="py-2 px-4 border-b">{users[index].email}</td>
+                <td className="py-2 px-4 border-b">{users[index].address}</td>
+                <td className="py-2 px-4 border-b">{users[index].mobile}</td>
+                <td className="py-2 px-4 border-b">{users[index].username}</td>
+                <td className="py-2 px-4 border-b">{users[index].role}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {/* User details table end */}
+
+      {/* Create User and update*/}
+      <div className="mb-6 w-full">
+        <h2 className="text-lg font-semibold mb-2">Create User</h2>
+        <div className=" w-full ">
+          <input
+            type="text"
+            placeholder="First Name"
+            value={first_name}
+            onChange={(e) => setFirstName(e.target.value)}
+            className="p-2 border rounded-md  w-full md:w-1/2"
+          />
+          <input
+            type="text"
+            placeholder="Last Name"
+            value={last_name}
+            onChange={(e) => setLastName(e.target.value)}
+            className="p-2 border rounded-md  w-full md:w-1/2"
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="p-2 border rounded-md  w-full md:w-1/2"
+          />
+          <input
+            type="text"
+            placeholder="Address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            className="p-2 border rounded-md  w-full md:w-1/2"
+          />
+          <input
+            type="text"
+            placeholder="Mobile"
+            value={mobile}
+            onChange={(e) => setMobile(e.target.value)}
+            className="p-2 border rounded-md  w-full md:w-1/2"
+          />
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="p-2 border rounded-md  w-full md:w-1/2"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="p-2 border rounded-md  w-full md:w-1/2"
+          />
+          <button
+            type="button"
+            onClick={handleCreateUser}
+            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+          >
+            Create New User
+          </button>
+          <button
+            type="button"
+            onClick={handleUpdateUser}
+            className="bg-green-500 text-white px-4 py-2 rounded-md"
+          >
+            Update User Details
+          </button>
+        </div>
       </div>
 
       {/* Update User */}
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <h2 className="text-lg font-semibold mb-2">Update User</h2>
         {selectedUser && (
           <div className="flex space-x-4">
@@ -106,14 +238,18 @@ const UserManagement = () => {
               type="text"
               placeholder="New Name"
               value={selectedUser.name}
-              onChange={(e) => setSelectedUser({ ...selectedUser, name: e.target.value })}
+              // onChange={(e) =>
+              //   setSelectedUser({ ...selectedUser, name: e.target.value })
+              // }
               className="p-2 border rounded-md w-1/2"
             />
             <input
               type="email"
               placeholder="New Email"
               value={selectedUser.email}
-              onChange={(e) => setSelectedUser({ ...selectedUser, email: e.target.value })}
+              // onChange={(e) =>
+              //   setSelectedUser({ ...selectedUser, email: e.target.value })
+              // }
               className="p-2 border rounded-md w-1/2"
             />
             <button
@@ -125,10 +261,10 @@ const UserManagement = () => {
             </button>
           </div>
         )}
-      </div>
+      </div> */}
 
       {/* Delete User */}
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <h2 className="text-lg font-semibold mb-2">Delete User</h2>
         {selectedUser && (
           <div className="flex space-x-4">
@@ -141,7 +277,7 @@ const UserManagement = () => {
             </button>
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
