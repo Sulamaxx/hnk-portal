@@ -16,27 +16,27 @@ const EmployeeLayout = ({
         <div className="col-span-1">
           <ul className="space-y-4">
             <li>
-              <Link href="/project-management"className="text-blue-500 hover:underline">
+              <Link href="ProjectManagement"className="text-blue-500 hover:underline">
                Project Management
               </Link>
             </li>
             <li>
-              <Link href="/knowledge-search"className="text-blue-500 hover:underline">
+              <Link href="KnowledgeSearch"className="text-blue-500 hover:underline">
                Knowledge Search
               </Link>
             </li>
             <li>
-              <Link href="/employee-biographies"className="text-blue-500 hover:underline">
+              <Link href="Biographies"className="text-blue-500 hover:underline">
               Employee Biographies
               </Link>
             </li>
             <li>
-              <Link href="/credential-packages"className="text-blue-500 hover:underline">
+              <Link href="CredentialPackages"className="text-blue-500 hover:underline">
               Credential Packages
               </Link>
             </li>
             <li>
-              <Link href="/announcements"className="text-blue-500 hover:underline">
+              <Link href="Announcements"className="text-blue-500 hover:underline">
                Announcements
               </Link>
             </li>
