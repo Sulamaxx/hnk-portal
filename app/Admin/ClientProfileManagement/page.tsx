@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const ClientProfileManagement = () => {
   // const [clientProfiles, setClientProfiles] = useState([
@@ -24,13 +24,7 @@ const ClientProfileManagement = () => {
   //   details: "",
   // });
 
-  // const handleCreateClientProfile = () => {
-  //   setClientProfiles([
-  //     ...clientProfiles,
-  //     { id: clientProfiles.length + 1, ...newClientProfile },
-  //   ]);
-  //   setNewClientProfile({ name: "", logo: "", details: "" });
-  // };
+ 
 
   // const handleReadClientProfile = (clientId) => {
   //   const clientProfile = clientProfiles.find(
@@ -65,38 +59,46 @@ const ClientProfileManagement = () => {
     lastName: "",
     email: "",
     phone: "",
+    projectsData: [],
   };
 
-  const [clients, setClients] = useState([
-    {
-      id: "1",
-      firstName: "John",
-      lastName: "Doe",
-      email: "john.doe@example.com",
-      phone: "123-456-7890",
-    },
-    {
-      id: "2",
-      firstName: "Saman",
-      lastName: "Perera",
-      email: "john.doe@example.com",
-      phone: "123-456-7890",
-    },
-    // Add more client objects as needed
-  ]);
+  const [clients, setClients] = useState([]);
+  const [selectedProject, setSelectedProject] = useState("");
 
   const handleInputChange = (field, value) => {
     setSelectedClient({ ...selectedClient, [field]: value });
   };
 
+  const loadClientDetails = function () {
+    fetch("http://localhost:5000/api/user/clients/all", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "content-Type": "application/json; charset=utf-8",
+      },
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        alert(data.message);
+        if (data.message == "success") {
+          setClients(data.clients);
+        }
+      });
+  };
+
+  useEffect(loadClientDetails, []);
+
   const projectsData = `Project 1: Project Details...
 Project 2: Project Details...
-Project 3: Project Details...
+Project 3: Project Details...ff
 `;
 
   const [selectedClient, setSelectedClient] = useState(initialClient);
 
   const handleSelectClient = (client) => {
+    setSelectedProject(client.folders[0]);
     setSelectedClient(client);
   };
 
@@ -111,7 +113,6 @@ Project 3: Project Details...
 
       <div className="w-full p-8  h-96 overflow-y-auto">
         <img src="./user.png" alt="Logo" className="mb-4" />
-      
 
         {/* Profile Management Content */}
         <div>
@@ -120,7 +121,7 @@ Project 3: Project Details...
             <input
               type="text"
               className="w-full p-2 border border-gray-300"
-              value={selectedClient.firstName}
+              value={selectedClient.first_name}
               onChange={(e) => handleInputChange("firstName", e.target.value)}
             />
           </label>
@@ -130,7 +131,7 @@ Project 3: Project Details...
             <input
               type="text"
               className="w-full p-2 border border-gray-300"
-              value={selectedClient.lastName}
+              value={selectedClient.last_name}
               onChange={(e) => handleInputChange("lastName", e.target.value)}
             />
           </label>
@@ -156,12 +157,13 @@ Project 3: Project Details...
           </label>
 
           <label className="block mb-4">
-            Projects:
-            <textarea
-              className="w-full p-2 border border-gray-300"
-              value={projectsData}
-              readOnly
-            />
+            <select id="project" value={selectedProject}>
+              <option value="" disabled>
+                Select a project
+              </option>
+              <option>project 1</option>
+              <option>project 2</option>
+            </select>
           </label>
 
           <button
@@ -188,11 +190,11 @@ Project 3: Project Details...
           <tbody>
             {clients.map((client) => (
               <tr key={client.id}>
-                <td className="py-2 px-4 border-b">{client.id}</td>
-                <td className="py-2 px-4 border-b">{client.firstName}</td>
-                <td className="py-2 px-4 border-b">{client.lastName}</td>
+                <td className="py-2 px-4 border-b">{client._id}</td>
+                <td className="py-2 px-4 border-b">{client.first_name}</td>
+                <td className="py-2 px-4 border-b">{client.last_name}</td>
                 <td className="py-2 px-4 border-b">{client.email}</td>
-                <td className="py-2 px-4 border-b">{client.phone}</td>
+                <td className="py-2 px-4 border-b">{client.mobile}</td>
                 <td className="py-2 px-4 border-b">
                   <button
                     className="text-blue-500 hover:underline mr-2"

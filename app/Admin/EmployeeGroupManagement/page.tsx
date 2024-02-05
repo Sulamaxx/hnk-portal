@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 const EmployeeGroupManagement = () => {
   const initialGroup = {
     id: "",
@@ -8,21 +8,40 @@ const EmployeeGroupManagement = () => {
   };
 
   const [employeeGroups, setEmployeeGroups] = useState([
-    {
-      id: "1",
-      name: "Development Team",
-      description: "Responsible for software development",
-    },
-    {
-      id: "2",
-      name: "Marketing Team",
-      description: "Handles marketing activities",
-    },
-    // Add more group objects as needed
+    // {
+    //   id: "1",
+    //   name: "Development Team",
+    //   description: "Responsible for software development",
+    // },
+    // {
+    //   id: "2",
+    //   name: "Marketing Team",
+    //   description: "Handles marketing activities",
+    // },
+    // // Add more group objects as needed
   ]);
 
   const [selectedGroup, setSelectedGroup] = useState(initialGroup);
   const [creatingNewGroup, setCreatingNewGroup] = useState(false);
+
+  const loadEmployeeGroup = function () {
+    fetch("http://localhost:5000/api/employee-groups", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        alert(data.message);
+setEmployeeGroups(data.allEmployeeGroups);
+      });
+  };
+
+  useEffect(loadEmployeeGroup, []);
 
   const handleSelectGroup = (group) => {
     setSelectedGroup(group);
@@ -37,7 +56,9 @@ const EmployeeGroupManagement = () => {
   const handleDeleteGroup = (groupId) => {
     // Add logic to delete the employee group
     // You can send a request to a server or update the state directly
-    const updatedGroups = employeeGroups.filter((group) => group.id !== groupId);
+    const updatedGroups = employeeGroups.filter(
+      (group) => group.id !== groupId
+    );
     setEmployeeGroups(updatedGroups);
     setSelectedGroup(initialGroup);
   };
