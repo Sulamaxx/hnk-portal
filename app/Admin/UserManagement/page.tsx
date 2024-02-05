@@ -82,9 +82,19 @@ const UserManagement = () => {
       })
       .then(function (data) {
         alert(data.message);
+        clearTextFields();
         loadUsers();
       });
   };
+
+  function clearTextFields() {
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setAddress("");
+    setMobile("");
+    setUsername("");
+  }
 
   // const handleDeleteUser = () => {
   //   // Implement logic for deleting a user
