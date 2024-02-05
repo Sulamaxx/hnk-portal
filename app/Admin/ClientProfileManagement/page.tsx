@@ -24,8 +24,6 @@ const ClientProfileManagement = () => {
   //   details: "",
   // });
 
- 
-
   // const handleReadClientProfile = (clientId) => {
   //   const clientProfile = clientProfiles.find(
   //     (profile) => profile.id === clientId
@@ -61,6 +59,15 @@ const ClientProfileManagement = () => {
     phone: "",
     projectsData: [],
   };
+
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [email, setEmail] = useState();
+  const [mobile, setMobile] = useState();
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
+  const [file, setFile] = useState();
+  const [company, setCompany] = useState();
 
   const [clients, setClients] = useState([]);
   const [selectedProject, setSelectedProject] = useState("");
@@ -102,6 +109,34 @@ Project 3: Project Details...ff
     setSelectedClient(client);
   };
 
+  const handleCreateClientProfile = function () {
+    var details = JSON.stringify({
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      mobile: mobile,
+      username: username,
+      password: password,
+      image: file,
+      // company: company,
+      role:"client"
+    });
+    fetch("http://localhost:5000/api/register", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "content-Type": "application/json; charset=utf-8",
+      },
+      body: details,
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        alert(data.message);
+      });
+  };
+
   const handleSaveClient = () => {
     // Add logic to save or update the client profile
     // You can send a request to a server or update the state directly
@@ -112,7 +147,14 @@ Project 3: Project Details...ff
       <h1 className="text-2xl font-bold mb-4">Client Profile Management</h1>
 
       <div className="w-full p-8  h-96 overflow-y-auto">
-        <img src="./user.png" alt="Logo" className="mb-4" />
+        <div>
+          <input
+            type="file"
+            onChange={(e) => {
+              setFile(e.target.value);
+            }}
+          />
+        </div>
 
         {/* Profile Management Content */}
         <div>
@@ -121,8 +163,8 @@ Project 3: Project Details...ff
             <input
               type="text"
               className="w-full p-2 border border-gray-300"
-              value={selectedClient.first_name}
-              onChange={(e) => handleInputChange("firstName", e.target.value)}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
             />
           </label>
 
@@ -131,8 +173,8 @@ Project 3: Project Details...ff
             <input
               type="text"
               className="w-full p-2 border border-gray-300"
-              value={selectedClient.last_name}
-              onChange={(e) => handleInputChange("lastName", e.target.value)}
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
             />
           </label>
 
@@ -141,8 +183,8 @@ Project 3: Project Details...ff
             <input
               type="email"
               className="w-full p-2 border border-gray-300"
-              value={selectedClient.email}
-              onChange={(e) => handleInputChange("email", e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </label>
 
@@ -151,24 +193,43 @@ Project 3: Project Details...ff
             <input
               type="tel"
               className="w-full p-2 border border-gray-300"
-              value={selectedClient.mobile}
-              onChange={(e) => handleInputChange("mobile", e.target.value)}
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+            />
+          </label>
+          <label className="block mb-4">
+            Username:
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </label>
 
           <label className="block mb-4">
-            <select id="project" value={selectedProject}>
-              <option value="" disabled>
-                Select a project
-              </option>
-              <option>project 1</option>
-              <option>project 2</option>
-            </select>
+            Password:
+            <input
+              type="tel"
+              className="w-full p-2 border border-gray-300"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </label>
+          <label className="block mb-4">
+            Company:
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300"
+              value={company}
+              onChange={(e) => setCompany(e.target.value)}
+            />
           </label>
 
           <button
             type="button"
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            onClick={handleCreateClientProfile}
           >
             Create New User
           </button>
