@@ -1,7 +1,7 @@
 "use client";
 // AnnouncementManagement.js
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const AnnouncementManagement = () => {
   const initialAnnouncement = {
@@ -11,16 +11,16 @@ const AnnouncementManagement = () => {
   };
 
   const [announcements, setAnnouncements] = useState([
-    {
-      id: "1",
-      title: "Important Announcement",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    },
-    {
-      id: "2",
-      title: "Upcoming Event",
-      content: "Save the date for our upcoming event on dd/mm/yyyy.",
-    },
+    // {
+    //   id: "1",
+    //   title: "Important Announcement",
+    //   content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    // },
+    // {
+    //   id: "2",
+    //   title: "Upcoming Event",
+    //   content: "Save the date for our upcoming event on dd/mm/yyyy.",
+    // },
     // Add more announcement objects as needed
   ]);
 
@@ -65,20 +65,42 @@ const AnnouncementManagement = () => {
 
   const handleAddAnnouncement = () => {
     // Validate the form before adding the announcement
-    if (newAnnouncement.title.trim() === "" || newAnnouncement.content.trim() === "") {
+    if (
+      newAnnouncement.title.trim() === "" ||
+      newAnnouncement.content.trim() === ""
+    ) {
       alert("Please fill in all fields.");
       return;
     }
 
     // Pass the new announcement to the parent component
-    setAnnouncements((prevAnnouncements) => [...prevAnnouncements, newAnnouncement]);
+    setAnnouncements((prevAnnouncements) => [
+      ...prevAnnouncements,
+      newAnnouncement,
+    ]);
 
     // Reset the form
     setNewAnnouncement(initialAnnouncement);
   };
 
+  const loadAnounceMentDetails = function () {
+    fetch("http://localhost:5000/api/announcements", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setAnnouncements(data);
+      });
+  };
+
+  useEffect(loadAnounceMentDetails, []);
+
   return (
-    <div className="container mx-auto p-8">
+    <div className=" h-screen">
       <h1 className="text-3xl font-bold mb-8">Announcement Management</h1>
 
       <div className="flex">
@@ -88,16 +110,17 @@ const AnnouncementManagement = () => {
           <div className="grid grid-cols-1 gap-4">
             {announcements.map((announcement) => (
               <div
-                key={announcement.id}
+                key={announcement._id}
                 onClick={() => handleSelectAnnouncement(announcement)}
                 className={`cursor-pointer p-4 border rounded-md ${
-                  selectedAnnouncement.id === announcement.id
+                  selectedAnnouncement.id === announcement._id
                     ? "border-blue-500 bg-blue-100"
                     : "border-gray-300 hover:border-blue-500 hover:bg-gray-100"
                 }`}
               >
                 <h3 className="text-lg font-bold mb-2">{announcement.title}</h3>
                 <p>{announcement.content}</p>
+                {/* <p>{announcement.author.first_name}</p> */}
                 <button
                   className="text-red-500 hover:underline mt-2"
                   onClick={(e) => {
@@ -111,32 +134,18 @@ const AnnouncementManagement = () => {
             ))}
           </div>
 
-          <button
+          {/* <button
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4"
             onClick={handleCreateNewAnnouncement}
           >
             Create New Announcement
-          </button>
+          </button> */}
         </div>
 
         {/* Selected or Creating Announcement */}
         <div className="w-1/2 pl-4">
-          <h2 className="text-xl font-bold mb-4">
-            {creatingNewAnnouncement
-              ? "Create New Announcement"
-              : "Selected Announcement"}
-          </h2>
-
-          {selectedAnnouncement.id && !creatingNewAnnouncement && (
-            <div className="p-4 border rounded-md bg-gray-100">
-              <h3 className="text-lg font-bold mb-2">
-                {selectedAnnouncement.title}
-              </h3>
-              <p>{selectedAnnouncement.content}</p>
-            </div>
-          )}
-
-          {(creatingNewAnnouncement || (!selectedAnnouncement.id && !creatingNewAnnouncement)) && (
+          {(creatingNewAnnouncement ||
+            (!selectedAnnouncement.id && !creatingNewAnnouncement)) && (
             <div>
               <h1 className="text-3xl font-bold mb-8">Add New Announcement</h1>
 
@@ -164,6 +173,10 @@ const AnnouncementManagement = () => {
                   />
                 </label>
 
+                <select name="" id="">
+                  <option value="">Select author</option>
+                </select>
+
                 <button
                   type="button"
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
@@ -181,4 +194,3 @@ const AnnouncementManagement = () => {
 };
 
 export default AnnouncementManagement;
-

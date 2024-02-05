@@ -23,6 +23,26 @@ const EmployeeGroupManagement = () => {
 
   const [selectedGroup, setSelectedGroup] = useState(initialGroup);
   const [creatingNewGroup, setCreatingNewGroup] = useState(false);
+  const [selectedMembers, setSelectedMembers] = useState([]);
+  const [members, setMembers] = useState([]);
+
+  const loadMembers = (group) => {
+
+    fetch("http://localhost:5000/api/employee-groups/65c04ebf600243aa0cacf9bc", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+
+
+        alert(data.foundEmployeeGroup.members[0].first_name);
+        // setMembers(data.members);
+      });
+  };
 
   const loadEmployeeGroup = function () {
     fetch("http://localhost:5000/api/employee-groups", {
@@ -37,13 +57,14 @@ const EmployeeGroupManagement = () => {
       })
       .then(function (data) {
         alert(data.message);
-setEmployeeGroups(data.allEmployeeGroups);
+        setEmployeeGroups(data.allEmployeeGroups);
       });
   };
 
   useEffect(loadEmployeeGroup, []);
 
   const handleSelectGroup = (group) => {
+    loadMembers(group);
     setSelectedGroup(group);
     setCreatingNewGroup(false);
   };
@@ -79,10 +100,12 @@ setEmployeeGroups(data.allEmployeeGroups);
           <ul className="mb-4">
             {employeeGroups.map((group) => (
               <li
-                key={group.id}
+                key={group._id}
                 onClick={() => handleSelectGroup(group)}
                 className={`cursor-pointer ${
-                  selectedGroup.id === group.id ? "text-blue-500 font-bold" : ""
+                  selectedGroup.id === group._id
+                    ? "text-blue-500 font-bold"
+                    : ""
                 }`}
               >
                 {group.name}
@@ -103,7 +126,7 @@ setEmployeeGroups(data.allEmployeeGroups);
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             onClick={handleCreateNewGroup}
           >
-            Create New Group
+            Group Details
           </button>
         </div>
 
@@ -140,6 +163,21 @@ setEmployeeGroups(data.allEmployeeGroups);
                   })
                 }
               />
+            </label>
+
+            <label className="block mb-4" htmlFor="memberSelect">
+              Select Members:
+              <select
+                id="memberSelect"
+                className="w-full p-2 border border-gray-300"
+                value={members}
+              >
+                {/* {members.map((member) => (
+                  <option key={member._id} value={member._id}>
+                    {member.first_name} {member.last_name}
+                  </option>
+                ))} */}
+              </select>
             </label>
 
             <button
