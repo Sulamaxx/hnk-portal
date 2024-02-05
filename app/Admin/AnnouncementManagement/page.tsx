@@ -44,13 +44,20 @@ const AnnouncementManagement = () => {
   };
 
   const handleDeleteAnnouncement = (announcementId) => {
-    // Add logic to delete the announcement
-    // You can send a request to a server or update the state directly
-    const updatedAnnouncements = announcements.filter(
-      (announcement) => announcement.id !== announcementId
-    );
-    setAnnouncements(updatedAnnouncements);
-    setSelectedAnnouncement(initialAnnouncement);
+    fetch("http://localhost:5000/api/announcements/" + announcementId, {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        alert(data.message);
+        if (data.message == "Announcement deleted successfully") {
+          loadAnounceMentDetails();
+        }
+      });
   };
 
   const [newAnnouncement, setNewAnnouncement] = useState(initialAnnouncement);
@@ -128,7 +135,7 @@ const AnnouncementManagement = () => {
                   className="text-red-500 hover:underline mt-2"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleDeleteAnnouncement(announcement.id);
+                    handleDeleteAnnouncement(announcement._id);
                   }}
                 >
                   Delete
