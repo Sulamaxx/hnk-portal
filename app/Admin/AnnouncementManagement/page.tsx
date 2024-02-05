@@ -24,13 +24,14 @@ const AnnouncementManagement = () => {
     // Add more announcement objects as needed
   ]);
 
-  const [selectedAnnouncement, setSelectedAnnouncement] =
-    useState(initialAnnouncement);
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState({});
   const [creatingNewAnnouncement, setCreatingNewAnnouncement] = useState(false);
+  const [selectedAnnouncementId, setSelectedAnouncementId] = useState();
 
   const handleSelectAnnouncement = (announcement) => {
     setAnouncementTitle(announcement.title);
     setAnouncementContent(announcement.content);
+    setSelectedAnouncementId(announcement._id);
     setCreatingNewAnnouncement(false);
   };
 
@@ -109,6 +110,28 @@ const AnnouncementManagement = () => {
   };
 
   useEffect(loadAnounceMentDetails, []);
+
+  const handleAnouncementUpdate = function () {
+    var details = JSON.stringify({
+      title: anouncementTitle,
+      content: anouncementContent,
+    });
+    fetch("http://localhost:5000/api/announcements/" + selectedAnnouncementId, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: details,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+       
+        loadAnounceMentDetails();
+        clearTextFields();
+        alert("Anouncement Succefully updated");
+      });
+  };
 
   return (
     <div className=" h-screen">
@@ -190,6 +213,13 @@ const AnnouncementManagement = () => {
                   onClick={handleAddAnnouncement}
                 >
                   Add Announcement
+                </button>
+                <button
+                  type="button"
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                  onClick={handleAnouncementUpdate}
+                >
+                  Update Announcement
                 </button>
               </form>
             </div>
