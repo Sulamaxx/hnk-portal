@@ -111,6 +111,7 @@ const UserManagement = () => {
         <table className="min-w-full bg-white border border-gray-300">
           <thead>
             <tr>
+            <th className="py-2 px-4 border-b hidden">ID</th>
               <th className="py-2 px-4 border-b">First Name</th>
               <th className="py-2 px-4 border-b">Last Name</th>
               <th className="py-2 px-4 border-b">Email</th>
@@ -127,6 +128,9 @@ const UserManagement = () => {
                 onClick={() => handleSelectUser(index)}
                 className="cursor-pointer"
               >
+                 <td className="py-2 px-4 border-b hidden">
+                  {users[index]._id}
+                </td>
                 <td className="py-2 px-4 border-b">
                   {users[index].first_name}
                 </td>
