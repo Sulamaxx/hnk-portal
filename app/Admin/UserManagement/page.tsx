@@ -1,7 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { Router } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 const UserManagement = () => {
+  const router = useRouter();
   const [users, setUsers] = useState([]);
 
   const [searchText, setSearchText] = useState();
@@ -14,14 +17,42 @@ const UserManagement = () => {
   const [address, setAddress] = useState("");
   const [mobile, setMobile] = useState("");
   const [username, setUsername] = useState("");
+  const [selectedRole, setSelectedRole] = useState("");
   const [password, setPassword] = useState("");
 
   const [selectedUserDetails, setSelectedUserDetails] = useState();
   const [selectedUserId, setSelectedUserId] = useState();
 
   const handleCreateUser = () => {
-    setUsers([...users, { id: users.length + 1, ...newUser }]);
-    setNewUser({ name: "", email: "" });
+    var details = JSON.stringify({
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      address: address,
+      mobile: mobile,
+      username: username,
+      password: password,
+      role:selectedRole ,
+    });
+    fetch("http://localhost:5000/api/register", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "content-Type": "application/json; charset=utf-8",
+      },
+      body: details,
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        alert(data.message);
+        if (data.message == "User registered successfully") {
+          loadUsers();
+          clearTextFields();
+        }
+      
+      });
   };
 
   const handleReadUser = () => {
@@ -52,7 +83,11 @@ const UserManagement = () => {
         return response.json();
       })
       .then(function (data) {
-        setUsers(data.employees);
+        if (data.message == "success") {
+          setUsers(data.users);
+        } else {
+          router.push("/login");
+        }
       });
   };
   useEffect(loadUsers, []);
@@ -97,14 +132,12 @@ const UserManagement = () => {
   }
 
   const handleDeleteUser = () => {
-   
     fetch("http://localhost:5000/api/user/delete/" + selectedUserId, {
       method: "DELETE",
       credentials: "include",
       headers: {
         "content-Type": "application/json; charset=utf-8",
       },
-    
     })
       .then(function (response) {
         return response.json();
@@ -251,13 +284,17 @@ const UserManagement = () => {
             onChange={(e) => setUsername(e.target.value)}
             className="p-2 border rounded-md  w-full md:w-1/2"
           />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="p-2 border rounded-md  w-full md:w-1/2"
-          />
+          <select
+            id="roleSelect"
+            value={selectedRole}
+            onChange={(e) => setSelectedRole(e.target.value)}
+            className="block w-72 p-2 border rounded-md focus:outline-none focus:border-blue-500"
+          >
+            <option value="SelectRole">Select Role</option>
+            <option value="admin">Admin</option>
+            <option value="employee">Employee</option>
+            <option value="client">Client</option>
+          </select>
           <button
             type="button"
             onClick={handleCreateUser}
