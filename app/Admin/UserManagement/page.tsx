@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
 
+  const [searchText, setSearchText] = useState();
+
   const [selectedUserRow, setSelectedUserRow] = useState("");
   const [newUser, setNewUser] = useState({ name: "", email: "" });
   const [first_name, setFirstName] = useState("");
@@ -19,11 +21,21 @@ const UserManagement = () => {
     setNewUser({ name: "", email: "" });
   };
 
-  // const handleReadUser = (userId: number) => {
-  //   // Implement logic for reading a specific user by its identifier
-  //   const user = users.find((user) => user.id === userId);
-  //   setSelectedUser(user);
-  // };
+  const handleReadUser = () => {
+    fetch("http://localhost:5000/api/user/employees/search?q=" + searchText, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "content-Type": "application/json; charset=utf-8",
+      },
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        setUsers(data.employees);
+      });
+  };
 
   const loadUsers = function () {
     fetch("http://localhost:5000/api/user/employees/all", {
@@ -32,10 +44,6 @@ const UserManagement = () => {
       headers: {
         "content-Type": "application/json; charset=utf-8",
       },
-      // body: JSON.stringify({
-      //   username: username,
-      //   password: password,
-      // }),
     })
       .then(function (response) {
         return response.json();
@@ -84,12 +92,13 @@ const UserManagement = () => {
           <input
             type="text"
             placeholder="User ID"
-            onChange={(e) => setSelectedUser(null)} // Clear selected user when searching
             className="p-2 border rounded-md"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
           />
           <button
             type="button"
-            onClick={() => handleReadUser(Number(selectedUserRow))}
+            onClick={handleReadUser}
             className="bg-blue-500 text-white px-4 py-2 rounded-md"
           >
             Search
@@ -111,7 +120,7 @@ const UserManagement = () => {
         <table className="min-w-full bg-white border border-gray-300">
           <thead>
             <tr>
-            <th className="py-2 px-4 border-b hidden">ID</th>
+              <th className="py-2 px-4 border-b hidden">ID</th>
               <th className="py-2 px-4 border-b">First Name</th>
               <th className="py-2 px-4 border-b">Last Name</th>
               <th className="py-2 px-4 border-b">Email</th>
@@ -128,7 +137,7 @@ const UserManagement = () => {
                 onClick={() => handleSelectUser(index)}
                 className="cursor-pointer"
               >
-                 <td className="py-2 px-4 border-b hidden">
+                <td className="py-2 px-4 border-b hidden">
                   {users[index]._id}
                 </td>
                 <td className="py-2 px-4 border-b">
