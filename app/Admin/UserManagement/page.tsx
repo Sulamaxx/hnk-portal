@@ -1,45 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const UserManagement = () => {
-  const [users, setUsers] = useState([
-    {
-      first_name: "Saman",
-      last_name: "Perera",
-      email: "john.doe@example.com",
-      address: "123 Main St, City",
-      mobile: "123-456-7890",
-      username: "johndoe",
-      role: "User",
-    },
-    {
-      first_name: "Kamal",
-      last_name: "Silva",
-      email: "john.doe@example.com",
-      address: "123 Main St, City",
-      mobile: "123-456-7890",
-      username: "johndoe",
-      role: "User",
-    },
-    {
-      first_name: "Arun",
-      last_name: "Fernando",
-      email: "john.doe@example.com",
-      address: "123 Main St, City",
-      mobile: "123-456-7890",
-      username: "johndoe",
-      role: "User",
-    },
-    {
-      first_name: "John",
-      last_name: "Doe",
-      email: "john.doe@example.com",
-      address: "123 Main St, City",
-      mobile: "123-456-7890",
-      username: "johndoe",
-      role: "User",
-    },
-  ]);
+  const [users, setUsers] = useState([]);
 
   const [selectedUserRow, setSelectedUserRow] = useState("");
   const [newUser, setNewUser] = useState({ name: "", email: "" });
@@ -62,13 +25,34 @@ const UserManagement = () => {
   //   setSelectedUser(user);
   // };
 
+  const loadUsers = function () {
+    fetch("http://localhost:5000/api/user/employees/all", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "content-Type": "application/json; charset=utf-8",
+      },
+      // body: JSON.stringify({
+      //   username: username,
+      //   password: password,
+      // }),
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        setUsers(data.employees);
+      });
+  };
+  useEffect(loadUsers, []);
+
   const handleUpdateUser = () => {
-    setUsers(
-      users.map((user) =>
-        user.id === selectedUser.id ? { ...user, ...selectedUser } : user
-      )
-    );
-    setSelectedUser(null);
+    // setUsers(
+    //   users.map((user) =>
+    //     user.id === selectedUser.id ? { ...user, ...selectedUser } : user
+    //   )
+    // );
+    // setSelectedUser(null);
   };
 
   // const handleDeleteUser = () => {
