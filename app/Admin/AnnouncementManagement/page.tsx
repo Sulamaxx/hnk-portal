@@ -54,33 +54,36 @@ const AnnouncementManagement = () => {
   };
 
   const [newAnnouncement, setNewAnnouncement] = useState(initialAnnouncement);
+  const [anouncementTitle, setAnouncementTitle] = useState("");
+  const [anouncementContent, setAnouncementContent] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewAnnouncement((prevAnnouncement) => ({
-      ...prevAnnouncement,
-      [name]: value,
-    }));
+  const clearTextFields = function () {
+    setAnouncementTitle("");
+    setAnouncementContent("");
   };
 
   const handleAddAnnouncement = () => {
-    // Validate the form before adding the announcement
-    if (
-      newAnnouncement.title.trim() === "" ||
-      newAnnouncement.content.trim() === ""
-    ) {
-      alert("Please fill in all fields.");
-      return;
-    }
+    var details = JSON.stringify({
+      title: anouncementTitle,
+      content: anouncementContent,
+    });
 
-    // Pass the new announcement to the parent component
-    setAnnouncements((prevAnnouncements) => [
-      ...prevAnnouncements,
-      newAnnouncement,
-    ]);
-
-    // Reset the form
-    setNewAnnouncement(initialAnnouncement);
+    fetch("http://localhost:5000/api/announcements", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: details,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        alert(data.message);
+        if (data.message == "Announcement create successfully") {
+          clearTextFields();
+          loadAnounceMentDetails();
+        }
+      });
   };
 
   const loadAnounceMentDetails = function () {
@@ -93,7 +96,7 @@ const AnnouncementManagement = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setAnnouncements(data);
+        setAnnouncements(data.allAnnouncements);
       });
   };
 
@@ -157,8 +160,8 @@ const AnnouncementManagement = () => {
                     id="announcementTitle"
                     name="title"
                     className="w-full p-2 border border-gray-300"
-                    value={newAnnouncement.title}
-                    onChange={handleChange}
+                    value={anouncementTitle}
+                    onChange={(e) => setAnouncementTitle(e.target.value)}
                   />
                 </label>
 
@@ -168,14 +171,10 @@ const AnnouncementManagement = () => {
                     id="announcementContent"
                     name="content"
                     className="w-full p-2 border border-gray-300"
-                    value={newAnnouncement.content}
-                    onChange={handleChange}
+                    value={anouncementContent}
+                    onChange={(e) => setAnouncementContent(e.target.value)}
                   />
                 </label>
-
-                <select name="" id="">
-                  <option value="">Select author</option>
-                </select>
 
                 <button
                   type="button"
