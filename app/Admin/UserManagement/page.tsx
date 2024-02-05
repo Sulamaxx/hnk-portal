@@ -94,7 +94,9 @@ const UserManagement = () => {
             placeholder="User ID"
             className="p-2 border rounded-md"
             value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+            }}
           />
           <button
             type="button"
