@@ -16,6 +16,9 @@ const UserManagement = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const [selectedUserDetails, setSelectedUserDetails] = useState();
+  const [selectedUserId, setSelectedUserId] = useState();
+
   const handleCreateUser = () => {
     setUsers([...users, { id: users.length + 1, ...newUser }]);
     setNewUser({ name: "", email: "" });
@@ -55,12 +58,32 @@ const UserManagement = () => {
   useEffect(loadUsers, []);
 
   const handleUpdateUser = () => {
-    // setUsers(
-    //   users.map((user) =>
-    //     user.id === selectedUser.id ? { ...user, ...selectedUser } : user
-    //   )
-    // );
-    // setSelectedUser(null);
+    var details = JSON.stringify({
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      address: address,
+      mobile: mobile,
+      username: username,
+    });
+
+    // setSelectedUserDetails(details);
+
+    fetch("http://localhost:5000/api/user/update/" + selectedUserId, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "content-Type": "application/json; charset=utf-8",
+      },
+      body: details,
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        alert(data.message);
+        loadUsers();
+      });
   };
 
   // const handleDeleteUser = () => {
@@ -73,6 +96,8 @@ const UserManagement = () => {
 
   const handleSelectUser = (index) => {
     setSelectedUserRow(index);
+
+    setSelectedUserId(users[index]._id);
     setFirstName(users[index].first_name);
     setLastName(users[index].last_name);
     setEmail(users[index].email);
