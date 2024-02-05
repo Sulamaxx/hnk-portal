@@ -96,13 +96,25 @@ const UserManagement = () => {
     setUsername("");
   }
 
-  // const handleDeleteUser = () => {
-  //   // Implement logic for deleting a user
-  //   // Confirm deletion, remove user from the list, show success message, etc.
-  //   // For simplicity, just remove the selected user from the list
-  //   setUsers(users.filter((user) => user.id !== selectedUser.id));
-  //   setSelectedUser(null);
-  // };
+  const handleDeleteUser = () => {
+   
+    fetch("http://localhost:5000/api/user/delete/" + selectedUserId, {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "content-Type": "application/json; charset=utf-8",
+      },
+    
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        alert(data.message);
+        clearTextFields();
+        loadUsers();
+      });
+  };
 
   const handleSelectUser = (index) => {
     setSelectedUserRow(index);
@@ -259,6 +271,13 @@ const UserManagement = () => {
             className="bg-green-500 text-white px-4 py-2 rounded-md"
           >
             Update User Details
+          </button>
+          <button
+            type="button"
+            onClick={handleDeleteUser}
+            className="bg-rose-500 text-white px-4 py-2 rounded-md"
+          >
+            Delete User
           </button>
         </div>
       </div>
