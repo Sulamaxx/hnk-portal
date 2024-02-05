@@ -29,7 +29,8 @@ const AnnouncementManagement = () => {
   const [creatingNewAnnouncement, setCreatingNewAnnouncement] = useState(false);
 
   const handleSelectAnnouncement = (announcement) => {
-    setSelectedAnnouncement(announcement);
+    setAnouncementTitle(announcement.title);
+    setAnouncementContent(announcement.content);
     setCreatingNewAnnouncement(false);
   };
 
