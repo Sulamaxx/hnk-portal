@@ -5,10 +5,10 @@ import React, { useEffect, useState } from "react";
 const ProjectManagement = () => {
   const [projects, setProjects] = useState([]);
   const [projectID, setProjectID] = useState("");
-  const [projectName, setProjectName] = useState();
-  const [projectDescription, setProjectDescription] = useState();
-  const [projectEmployeeGroupName, setProjectEmployeeGroupName] = useState();
-  const [projectGroupMemberCount, setProjectGroupMemberCount] = useState();
+  const [projectName, setProjectName] = useState("");
+  const [projectDescription, setProjectDescription] = useState("");
+  const [projectEmployeeGroupName, setProjectEmployeeGroupName] = useState("");
+  const [projectGroupMemberCount, setProjectGroupMemberCount] = useState("");
   const [projectClient, setProjectClient] = useState();
 
   const loadProjectDetails = function () {
@@ -59,10 +59,18 @@ const ProjectManagement = () => {
         .then((data) => {
           alert(data.message);
           loadProjectDetails();
+          clearTextFields();
         });
     }
   };
 
+  const clearTextFields=function(){
+    setProjectName("");
+    setProjectClient("");
+    setProjectDescription("");
+    setProjectEmployeeGroupName("");
+    setProjectGroupMemberCount("");
+  }
   
   const [selectedProject, setSelectedProject] = useState({});
   const [creatingNewProject, setCreatingNewProject] = useState(false);
