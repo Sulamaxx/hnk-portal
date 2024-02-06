@@ -1,14 +1,26 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const ProjectManagement = () => {
-  const [projects, setProjects] = useState([
-    // Initial projects data (replace with your actual data)
-    { id: "1", name: "Project A", description: "Description for Project A" },
-    { id: "2", name: "Project B", description: "Description for Project B" },
-    // Add more projects as needed
-  ]);
+  const [projects, setProjects] = useState([]);
+
+  const loadProjectDetails = function () {
+    fetch("http://localhost:5000/api/projects", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        alert(data.message);
+        setProjects(data.allProjects);
+      });
+  };
+
+  useEffect(loadProjectDetails, []);
 
   const [selectedProject, setSelectedProject] = useState({});
   const [creatingNewProject, setCreatingNewProject] = useState(false);
@@ -81,19 +93,19 @@ const ProjectManagement = () => {
             {projects.map((project) => (
               <li key={project.id} className="cursor-pointer">
                 <span
-                //   onClick={() => handleViewProject(project.id)}
+                  //   onClick={() => handleViewProject(project.id)}
                   className="text-blue-500 hover:underline"
                 >
                   {project.name}
                 </span>
                 <button
-                //   onClick={() => handleUpdateProject(project.id)}
+                  //   onClick={() => handleUpdateProject(project.id)}
                   className="text-green-500 hover:underline ml-2"
                 >
                   Edit
                 </button>
                 <button
-                //   onClick={() => handleDeleteProject(project.id)}
+                  //   onClick={() => handleDeleteProject(project.id)}
                   className="text-red-500 hover:underline ml-2"
                 >
                   Delete

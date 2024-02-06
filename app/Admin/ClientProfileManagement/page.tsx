@@ -104,36 +104,35 @@ Project 3: Project Details...ff
 
   const [selectedClient, setSelectedClient] = useState(initialClient);
 
-  const handleSelectClient = (client) => {
-    setSelectedProject(client.folders[0]);
-    setSelectedClient(client);
-  };
+  const handleSelectClient = (client) => {};
 
   const handleCreateClientProfile = function () {
-    var details = JSON.stringify({
-      first_name: firstName,
-      last_name: lastName,
-      email: email,
-      mobile: mobile,
-      username: username,
-      password: password,
-      image: file,
-      // company: company,
-      role:"client"
-    });
+    const form = new FormData();
+    form.append("first_name", firstName);
+    form.append("last_name", lastName);
+    form.append("email", email);
+    form.append("mobile", mobile);
+    form.append("username", username);
+    form.append("password", password);
+    form.append("file", file);
+    form.append("companyName", company);
+    form.append("role", "client");
+
     fetch("http://localhost:5000/api/register", {
       method: "POST",
       credentials: "include",
       headers: {
         "content-Type": "application/json; charset=utf-8",
+        "enctype":"multipart/form-data"
       },
-      body: details,
+      body: form,
     })
       .then(function (response) {
         return response.json();
       })
       .then(function (data) {
         alert(data.message);
+        loadClientDetails();
       });
   };
 
@@ -250,7 +249,7 @@ Project 3: Project Details...ff
           </thead>
           <tbody>
             {clients.map((client) => (
-              <tr key={client.id}>
+              <tr key={client._id}>
                 <td className="py-2 px-4 border-b">{client._id}</td>
                 <td className="py-2 px-4 border-b">{client.first_name}</td>
                 <td className="py-2 px-4 border-b">{client.last_name}</td>
