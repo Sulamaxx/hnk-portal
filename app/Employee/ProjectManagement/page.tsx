@@ -126,7 +126,7 @@ const ProjectManagement = () => {
   };
 
   return (
-    <div className="container mx-auto p-8">
+    <div className=" p-8">
       <h1 className="text-3xl font-bold mb-8">Project Management</h1>
 
       <div className="grid grid-cols-2 gap-4">
@@ -152,12 +152,6 @@ const ProjectManagement = () => {
               </li>
             ))}
           </ul>
-          {/* <button
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4"
-            onClick={handleCreateProject}
-          >
-            Create New Project
-          </button> */}
         </div>
 
         {/* Project Details Form */}
@@ -229,6 +223,92 @@ const ProjectManagement = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className=" ">
+        <h1 className="text-3xl font-bold mb-8">Create New Project</h1>
+
+        <form className="max-w-lg mx-auto">
+          <div className="mb-4">
+            <label htmlFor="name" className="block text-sm font-semibold mb-2">
+              Project Name:
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              className="w-full p-2 border border-gray-300"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="description"
+              className="block text-sm font-semibold mb-2"
+            >
+              Description:
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              className="w-full p-2 border border-gray-300"
+              rows="4"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="employeeGroup"
+              className="block text-sm font-semibold mb-2"
+            >
+              Employee Group Name:
+            </label>
+            <input
+              type="text"
+              id="employeeGroup"
+              name="employeeGroup"
+              className="w-full p-2 border border-gray-300"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="client"
+              className="block text-sm font-semibold mb-2"
+            >
+              Client:
+            </label>
+            <input
+              type="text"
+              id="client"
+              name="client"
+              className="w-full p-2 border border-gray-300"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="members"
+              className="block text-sm font-semibold mb-2"
+            >
+              Members:
+            </label>
+            <select className="w-full p-2 border border-gray-300 rounded-md">
+              <option value="">Option1 </option>
+              <option value="">Option2 </option>
+            </select>
+          </div>
+
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Create Project
+          </button>
+        </form>
       </div>
     </div>
   );
