@@ -64,14 +64,30 @@ const ProjectManagement = () => {
     }
   };
 
-  const clearTextFields=function(){
+  const clearTextFields = function () {
     setProjectName("");
     setProjectClient("");
     setProjectDescription("");
     setProjectEmployeeGroupName("");
     setProjectGroupMemberCount("");
-  }
-  
+  };
+
+  const handleDeleteProject = (projectId) => {
+    fetch("http://localhost:5000/api/projects/" + projectId, {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        alert(data.message);
+        loadProjectDetails();
+        clearTextFields();
+      });
+  };
+
   const [selectedProject, setSelectedProject] = useState({});
   const [creatingNewProject, setCreatingNewProject] = useState(false);
 
@@ -79,16 +95,6 @@ const ProjectManagement = () => {
   const handleCreateProject = () => {
     setCreatingNewProject(true);
     setSelectedProject({});
-  };
-
-  const handleDeleteProject = (projectId) => {
-    // Implement delete logic
-    const updatedProjects = projects.filter((p) => p.id !== projectId);
-    setProjects(updatedProjects);
-    setSelectedProject({});
-    setCreatingNewProject(false);
-    // Inform beenz system about the interaction
-    informBeenzSystem("Delete", projectId);
   };
 
   const handleSaveProject = (projectDetails) => {
@@ -136,14 +142,9 @@ const ProjectManagement = () => {
                 >
                   {project.name}
                 </span>
+
                 <button
-                  //   onClick={() => handleUpdateProject(project.id)}
-                  className="text-green-500 hover:underline ml-2"
-                >
-                  Edit
-                </button>
-                <button
-                  //   onClick={() => handleDeleteProject(project.id)}
+                  onClick={() => handleDeleteProject(project._id)}
                   className="text-red-500 hover:underline ml-2"
                 >
                   Delete
