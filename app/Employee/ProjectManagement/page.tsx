@@ -88,14 +88,12 @@ const ProjectManagement = () => {
       });
   };
 
+  const handleCreateProject = () => {};
+
   const [selectedProject, setSelectedProject] = useState({});
   const [creatingNewProject, setCreatingNewProject] = useState(false);
 
   // Functions for CRUD operations
-  const handleCreateProject = () => {
-    setCreatingNewProject(true);
-    setSelectedProject({});
-  };
 
   const handleSaveProject = (projectDetails) => {
     // Implement save/update logic
@@ -195,13 +193,16 @@ const ProjectManagement = () => {
 
               <label className="block mb-4">
                 Employee Group Name:
-                <input
+                {/* <input
                   readOnly
                   type="text"
                   className="w-full p-2 border border-gray-300"
                   value={projectEmployeeGroupName}
                   onChange={(e) => setProjectEmployeeGroupName(e.target.value)}
-                />
+                /> */}
+                <select name="" id="">
+                  <option value="">1 </option>
+                </select>
               </label>
               <label className="block mb-4">
                 Member count of Employee Group :
@@ -305,6 +306,7 @@ const ProjectManagement = () => {
           <button
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            onClick={handleCreateProject}
           >
             Create Project
           </button>

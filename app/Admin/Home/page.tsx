@@ -3,11 +3,13 @@ import AdminLayout from "../AdminLayout";
 
 const AdminHome = () => {
   return (
-    <AdminLayout>
-      <div>
-        <h1>Welcome to Admin Home Page</h1>
-      </div>
-    </AdminLayout>
+    <div className="h-screen">
+      <AdminLayout>
+        <div className="flex justify-center mt-40">
+          <h1 className="font-medium ">Welcome to Admin Home Page</h1>
+        </div>
+      </AdminLayout>
+    </div>
   );
 };
 

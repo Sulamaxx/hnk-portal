@@ -186,14 +186,7 @@ const UserManagement = () => {
             Search
           </button>
         </div>
-        {/* {selectedUser && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold mb-2">User Details</h3>
-            <p>ID: {selectedUser.id}</p>
-            <p>Name: {selectedUser.name}</p>
-            <p>Email: {selectedUser.email}</p>
-          </div>
-        )} */}
+      
       </div>
       {/* search user end*/}
 
@@ -318,56 +311,6 @@ const UserManagement = () => {
           </button>
         </div>
       </div>
-
-      {/* Update User */}
-      {/* <div className="mb-6">
-        <h2 className="text-lg font-semibold mb-2">Update User</h2>
-        {selectedUser && (
-          <div className="flex space-x-4">
-            <input
-              type="text"
-              placeholder="New Name"
-              value={selectedUser.name}
-              // onChange={(e) =>
-              //   setSelectedUser({ ...selectedUser, name: e.target.value })
-              // }
-              className="p-2 border rounded-md w-1/2"
-            />
-            <input
-              type="email"
-              placeholder="New Email"
-              value={selectedUser.email}
-              // onChange={(e) =>
-              //   setSelectedUser({ ...selectedUser, email: e.target.value })
-              // }
-              className="p-2 border rounded-md w-1/2"
-            />
-            <button
-              type="button"
-              onClick={handleUpdateUser}
-              className="bg-blue-500 text-white px-4 py-2 rounded-md"
-            >
-              Update
-            </button>
-          </div>
-        )}
-      </div> */}
-
-      {/* Delete User */}
-      {/* <div className="mb-6">
-        <h2 className="text-lg font-semibold mb-2">Delete User</h2>
-        {selectedUser && (
-          <div className="flex space-x-4">
-            <button
-              type="button"
-              onClick={handleDeleteUser}
-              className="bg-red-500 text-white px-4 py-2 rounded-md"
-            >
-              Confirm Deletion
-            </button>
-          </div>
-        )}
-      </div> */}
     </div>
   );
 };

@@ -7,7 +7,7 @@ const AdminLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <div className="flex">
+    <div className=" w-full">
       <nav className="bg-gray-800 p-4">
         <ul className="flex space-x-4">
           <li>

@@ -8,17 +8,7 @@ const EmployeeGroupManagement = () => {
   };
 
   const [employeeGroups, setEmployeeGroups] = useState([
-    // {
-    //   id: "1",
-    //   name: "Development Team",
-    //   description: "Responsible for software development",
-    // },
-    // {
-    //   id: "2",
-    //   name: "Marketing Team",
-    //   description: "Handles marketing activities",
-    // },
-    // // Add more group objects as needed
+
   ]);
 
   const [selectedGroup, setSelectedGroup] = useState(initialGroup);
@@ -75,8 +65,6 @@ const EmployeeGroupManagement = () => {
   };
 
   const handleDeleteGroup = (groupId) => {
-    // Add logic to delete the employee group
-    // You can send a request to a server or update the state directly
     const updatedGroups = employeeGroups.filter(
       (group) => group.id !== groupId
     );
@@ -84,10 +72,7 @@ const EmployeeGroupManagement = () => {
     setSelectedGroup(initialGroup);
   };
 
-  const handleSaveGroup = () => {
-    // Add logic to save or update the employee group
-    // You can send a request to a server or update the state directly
-  };
+  const handleSaveGroup = () => { };
 
   return (
     <div className="container mx-auto p-8">
@@ -172,11 +157,7 @@ const EmployeeGroupManagement = () => {
                 className="w-full p-2 border border-gray-300"
                 value={members}
               >
-                {/* {members.map((member) => (
-                  <option key={member._id} value={member._id}>
-                    {member.first_name} {member.last_name}
-                  </option>
-                ))} */}
+              
               </select>
             </label>
 
