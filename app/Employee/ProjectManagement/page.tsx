@@ -4,6 +4,11 @@ import React, { useEffect, useState } from "react";
 
 const ProjectManagement = () => {
   const [projects, setProjects] = useState([]);
+  const [projectID, setProjectID] = useState();
+  const [projectName, setProjectName] = useState();
+  const [projectDescription, setProjectDescription] = useState();
+  const [projectEmployeeGroupName, setProjectEmployeeGroupName] = useState();
+  const [projectGroupMemberCount, setProjectGroupMemberCount] = useState();
 
   const loadProjectDetails = function () {
     fetch("http://localhost:5000/api/projects", {
@@ -15,12 +20,25 @@ const ProjectManagement = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        alert(data.message);
+        console.log(JSON.stringify(data.allProjects));
+
         setProjects(data.allProjects);
       });
   };
 
   useEffect(loadProjectDetails, []);
+
+  const handleViewProject = (project) => {
+    const projectId = project._id;
+    setProjectID(projectID);
+    setProjectName(project.name);
+    setProjectDescription(project.description);
+    setProjectEmployeeGroupName(project.employeeGroup.name);
+    setProjectGroupMemberCount(project.employeeGroup.members.length);
+
+    // setSelectedProject(project);
+    // setCreatingNewProject(false);
+  };
 
   const [selectedProject, setSelectedProject] = useState({});
   const [creatingNewProject, setCreatingNewProject] = useState(false);
@@ -29,12 +47,6 @@ const ProjectManagement = () => {
   const handleCreateProject = () => {
     setCreatingNewProject(true);
     setSelectedProject({});
-  };
-
-  const handleViewProject = (projectId) => {
-    const project = projects.find((p) => p.id === projectId);
-    setSelectedProject(project);
-    setCreatingNewProject(false);
   };
 
   const handleUpdateProject = (projectId) => {
@@ -91,9 +103,9 @@ const ProjectManagement = () => {
           <h2 className="text-xl font-bold mb-4">Projects</h2>
           <ul className="space-y-4">
             {projects.map((project) => (
-              <li key={project.id} className="cursor-pointer">
+              <li key={project._id} className="cursor-pointer">
                 <span
-                  //   onClick={() => handleViewProject(project.id)}
+                  onClick={() => handleViewProject(project)}
                   className="text-blue-500 hover:underline"
                 >
                   {project.name}
@@ -113,71 +125,68 @@ const ProjectManagement = () => {
               </li>
             ))}
           </ul>
-          <button
+          {/* <button
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4"
             onClick={handleCreateProject}
           >
             Create New Project
-          </button>
+          </button> */}
         </div>
 
         {/* Project Details Form */}
         <div className="col-span-1">
-          <h2 className="text-xl font-bold mb-4">
-            {creatingNewProject ? "Create New Project" : "Project Details"}
-          </h2>
+          <h2 className="text-xl font-bold mb-4">Project Details</h2>
           <div className="p-4 border rounded-md bg-gray-100">
-            {creatingNewProject ? (
-              <div>
-                <label className="block mb-4" htmlFor="newProjectName">
-                  Project Name:
-                  <input
-                    type="text"
-                    id="newProjectName"
-                    name="name"
-                    className="w-full p-2 border border-gray-300"
-                    value={projectDetails.name}
-                    onChange={handleChange}
-                  />
-                </label>
+            <div>
+              <label className="block mb-4" htmlFor="ProjectName">
+                Project Name:
+                <input
+                  type="text"
+                  id="newProjectName"
+                  name="name"
+                  className="w-full p-2 border border-gray-300"
+                  value={projectName}
+                  onChange={(e)=>setProjectName(e.target.value)}
+                />
+              </label>
 
-                <label className="block mb-4" htmlFor="newProjectDescription">
-                  Project Description:
-                  <textarea
-                    id="newProjectDescription"
-                    name="description"
-                    className="w-full p-2 border border-gray-300"
-                    value={projectDetails.description}
-                    onChange={handleChange}
-                  />
-                </label>
-              </div>
-            ) : (
-              <div>
-                {selectedProject.id ? (
-                  <div>
-                    <h3 className="text-lg font-bold mb-2">
-                      {selectedProject.name}
-                    </h3>
-                    <p>{selectedProject.description}</p>
-                  </div>
-                ) : (
-                  <p className="text-gray-500">
-                    Select a project to view details.
-                  </p>
-                )}
-              </div>
-            )}
+              <label className="block mb-4" htmlFor="ProjectDescription">
+                Project Description:
+                <textarea
+                  id="newProjectDescription"
+                  name="description"
+                  className="w-full p-2 border border-gray-300"
+                  value={projectDescription}
+                  onChange={(e)=>setProjectDescription(e.target.value)}
+                />
+              </label>
+
+              <label className="block mb-4">
+                Employee Group Name:
+                <input 
+                readOnly
+                  type="text"
+                  className="w-full p-2 border border-gray-300"
+                  value={projectEmployeeGroupName}
+                  onChange={(e)=>setProjectEmployeeGroupName(e.target.value)}
+                />
+              </label>
+              <label className="block mb-4">
+                Member count of Employee Group :
+                <input
+                readOnly
+                  type="text"
+                  className="w-full p-2 border border-gray-300"
+                  value={projectGroupMemberCount}
+                  onChange={(e)=>setProjectGroupMemberCount(e.target.value)}
+                />
+              </label>
+
+              <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Update Project Details
+              </button>
+            </div>
           </div>
-          {creatingNewProject && (
-            <button
-              type="button"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4"
-              onClick={handleSave}
-            >
-              Save New Project
-            </button>
-          )}
         </div>
       </div>
     </div>
