@@ -9,6 +9,7 @@ const ProjectManagement = () => {
   const [projectDescription, setProjectDescription] = useState();
   const [projectEmployeeGroupName, setProjectEmployeeGroupName] = useState();
   const [projectGroupMemberCount, setProjectGroupMemberCount] = useState();
+  const [projectClient, setProjectClient] = useState();
 
   const loadProjectDetails = function () {
     fetch("http://localhost:5000/api/projects", {
@@ -35,10 +36,10 @@ const ProjectManagement = () => {
     setProjectDescription(project.description);
     setProjectEmployeeGroupName(project.employeeGroup.name);
     setProjectGroupMemberCount(project.employeeGroup.members.length);
-
-    // setSelectedProject(project);
-    // setCreatingNewProject(false);
+    setProjectClient(project.client.first_name);
   };
+
+  const handleUpdateProject = (projectId) => {};
 
   const [selectedProject, setSelectedProject] = useState({});
   const [creatingNewProject, setCreatingNewProject] = useState(false);
@@ -47,12 +48,6 @@ const ProjectManagement = () => {
   const handleCreateProject = () => {
     setCreatingNewProject(true);
     setSelectedProject({});
-  };
-
-  const handleUpdateProject = (projectId) => {
-    const project = projects.find((p) => p.id === projectId);
-    setSelectedProject(project);
-    setCreatingNewProject(true);
   };
 
   const handleDeleteProject = (projectId) => {
@@ -146,7 +141,18 @@ const ProjectManagement = () => {
                   name="name"
                   className="w-full p-2 border border-gray-300"
                   value={projectName}
-                  onChange={(e)=>setProjectName(e.target.value)}
+                  onChange={(e) => setProjectName(e.target.value)}
+                />
+              </label>
+
+              <label className="block mb-4">
+                Client:
+                <input
+                  type="text"
+                  readOnly
+                  className="w-full p-2 border border-gray-300"
+                  value={projectClient}
+                  onChange={(e) => setProjectClient(e.target.value)}
                 />
               </label>
 
@@ -157,32 +163,35 @@ const ProjectManagement = () => {
                   name="description"
                   className="w-full p-2 border border-gray-300"
                   value={projectDescription}
-                  onChange={(e)=>setProjectDescription(e.target.value)}
+                  onChange={(e) => setProjectDescription(e.target.value)}
                 />
               </label>
 
               <label className="block mb-4">
                 Employee Group Name:
-                <input 
-                readOnly
+                <input
+                  readOnly
                   type="text"
                   className="w-full p-2 border border-gray-300"
                   value={projectEmployeeGroupName}
-                  onChange={(e)=>setProjectEmployeeGroupName(e.target.value)}
+                  onChange={(e) => setProjectEmployeeGroupName(e.target.value)}
                 />
               </label>
               <label className="block mb-4">
                 Member count of Employee Group :
                 <input
-                readOnly
+                  readOnly
                   type="text"
                   className="w-full p-2 border border-gray-300"
                   value={projectGroupMemberCount}
-                  onChange={(e)=>setProjectGroupMemberCount(e.target.value)}
+                  onChange={(e) => setProjectGroupMemberCount(e.target.value)}
                 />
               </label>
 
-              <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                onClick={handleUpdateProject()}
+              >
                 Update Project Details
               </button>
             </div>
