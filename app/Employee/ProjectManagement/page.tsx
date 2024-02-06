@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 const ProjectManagement = () => {
   const [projects, setProjects] = useState([]);
-  const [projectID, setProjectID] = useState();
+  const [projectID, setProjectID] = useState("");
   const [projectName, setProjectName] = useState();
   const [projectDescription, setProjectDescription] = useState();
   const [projectEmployeeGroupName, setProjectEmployeeGroupName] = useState();
@@ -31,7 +31,7 @@ const ProjectManagement = () => {
 
   const handleViewProject = (project) => {
     const projectId = project._id;
-    setProjectID(projectID);
+    setProjectID(projectId);
     setProjectName(project.name);
     setProjectDescription(project.description);
     setProjectEmployeeGroupName(project.employeeGroup.name);
@@ -39,8 +39,31 @@ const ProjectManagement = () => {
     setProjectClient(project.client.first_name);
   };
 
-  const handleUpdateProject = (projectId) => {};
+  const handleUpdateProject = () => {
+    if (projectID == "") {
+      alert("Please select the project");
+    } else {
+      const details = JSON.stringify({
+        name: projectName,
+        description: projectDescription,
+      });
+      fetch("http://localhost:5000/api/projects/" + projectID, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+        },
+        body: details,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          alert(data.message);
+          loadProjectDetails();
+        });
+    }
+  };
 
+  
   const [selectedProject, setSelectedProject] = useState({});
   const [creatingNewProject, setCreatingNewProject] = useState(false);
 
@@ -190,7 +213,7 @@ const ProjectManagement = () => {
 
               <button
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                onClick={handleUpdateProject()}
+                onClick={handleUpdateProject}
               >
                 Update Project Details
               </button>
